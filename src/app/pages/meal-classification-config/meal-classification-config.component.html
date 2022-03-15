@@ -1,0 +1,41 @@
+<div>
+  <mat-toolbar>
+    <span>餐點分類設定</span>
+    <span style="flex: 1 1 auto;"></span>
+  </mat-toolbar>
+</div>
+
+<div style="width: 100%;">
+  <table mat-table [dataSource]="classifications" style="margin: 20px 20px;">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef style="width: 100px;"> 分類 </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field appearance="fill">
+          <mat-label>分類</mat-label>
+          <input #nameInput matInput [(ngModel)]="element.name" disabled>
+        </mat-form-field>
+      </td>
+      <td mat-footer-cell *matFooterCellDef> </td>
+    </ng-container>
+    <ng-container matColumnDef="uid">
+      <th mat-header-cell *matHeaderCellDef style="width: 135px;"> 動作 </th>
+      <td mat-cell *matCellDef="let element; let idx = index">
+        <div #btnGrp1>
+          <button mat-raised-button (click)="reserveDisabled(idx)">修改</button>
+          <button mat-raised-button color="warn" (click)="deleteClassification(idx)">刪除</button>
+        </div>
+        <div #btnGrp2 hidden>
+          <button mat-raised-button color="primary" (click)="saveClassification(idx)">儲存</button>
+        </div>
+      </td>
+      <td mat-footer-cell *matFooterCellDef>
+        <button mat-button color="primary" (click)="addClassification()">新增</button>
+      </td>
+      <th mat-footer-cell *matFooterCellDef> 動作 </th>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+  </table>
+</div>

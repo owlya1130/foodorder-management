@@ -1,0 +1,78 @@
+<div>
+  <mat-toolbar>
+    <span>食材設定</span>
+    <span style="flex: 1 1 auto;"></span>
+  </mat-toolbar>
+</div>
+
+<div style="width: 100%;">
+  <table mat-table [dataSource]="ingredients" style="margin: 20px 20px;">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef style="width: 100px;"> 名稱 </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field appearance="fill">
+          <mat-label>名稱</mat-label>
+          <input #nameInput matInput [(ngModel)]="element.name" disabled>
+        </mat-form-field>
+      </td>
+      <td mat-footer-cell *matFooterCellDef> </td>
+    </ng-container>
+    <ng-container matColumnDef="qty">
+      <th mat-header-cell *matHeaderCellDef style="width: 100px;"> 數量 </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field appearance="fill">
+          <mat-label>數量</mat-label>
+          <input #qtyInput matInput [(ngModel)]="element.qty" disabled>
+        </mat-form-field>
+      </td>
+      <td mat-footer-cell *matFooterCellDef> </td>
+    </ng-container>
+    <ng-container matColumnDef="packageBy">
+      <th mat-header-cell *matHeaderCellDef style="width: 100px;"> 分裝於 </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field appearance="fill">
+          <mat-label>分裝於</mat-label>
+          <!-- <input #packageByInput matInput [(ngModel)]="element.packageBy" > -->
+          <mat-select #packageBySelect disabled [(ngModel)]="element.packageBy">
+            <mat-option *ngFor="let ingredient of ingredients" [value]="ingredient.uid">
+              {{ingredient.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+      <td mat-footer-cell *matFooterCellDef> </td>
+    </ng-container>
+    <ng-container matColumnDef="packageQty">
+      <th mat-header-cell *matHeaderCellDef style="width: 100px;"> 分裝數量 </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field appearance="fill">
+          <mat-label>分裝數量</mat-label>
+          <input #packageQtyInput matInput [(ngModel)]="element.packageQty" disabled>
+        </mat-form-field>
+      </td>
+      <td mat-footer-cell *matFooterCellDef> </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="uid">
+      <th mat-header-cell *matHeaderCellDef style="width: 135px;"> 動作 </th>
+      <td mat-cell *matCellDef="let element; let idx = index">
+        <div #btnGrp1>
+          <button mat-raised-button (click)="reserveDisabled(idx)">修改</button>
+          <button mat-raised-button color="warn" (click)="deleteIngredient(idx)">刪除</button>
+        </div>
+        <div #btnGrp2 hidden>
+          <button mat-raised-button color="primary" (click)="saveIngredient(idx)">儲存</button>
+        </div>
+      </td>
+      <td mat-footer-cell *matFooterCellDef>
+        <button mat-button color="primary" (click)="addIngredient()">新增</button>
+      </td>
+      <th mat-footer-cell *matFooterCellDef> 動作 </th>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+  </table>
+</div>
