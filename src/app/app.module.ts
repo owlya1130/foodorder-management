@@ -10,6 +10,7 @@ import { MaterialsModule } from './modules/materials.module';
 import { MealClassificationConfigComponent } from './pages/meal-classification-config/meal-classification-config.component';
 import { DinningTableConfigComponent } from './pages/dinning-table-config/dinning-table-config.component';
 import { IngredientConfigComponent } from './pages/ingredient-config/ingredient-config.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { IngredientConfigComponent } from './pages/ingredient-config/ingredient-
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    HttpClientModule,
     FlexLayoutModule,
     MaterialsModule
   ],

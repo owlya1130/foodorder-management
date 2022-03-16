@@ -1,65 +1,29 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { Ingredient } from '../interfaces/ingredient';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IngredientService {
 
-  constructor() { }
-  getIngredients(): Observable<Ingredient[]> {
-    return new Observable(subscriber => {
-      subscriber.next(ELEMENT_DATA);
-      subscriber.complete();
-    });
+  constructor(private http: HttpClient) { }
+
+  findAll() {
+    return this.http.get(`${environment.apiHist}/ingredient/list`);
   }
 
-  saveIngredient(tableData: Ingredient): Observable<Ingredient> {
-    return new Observable(subscriber => {
-      ELEMENT_DATA.push(tableData);
-      subscriber.next(tableData);
-      subscriber.complete();
-    });
+  saveOrUpdate(ingredient: Ingredient) {
+    console.log(ingredient);
+    if (ingredient.uid === null) {
+      return this.http.post(`${environment.apiHist}/ingredient`, ingredient);
+    } else {
+      return this.http.put(`${environment.apiHist}/ingredient`, ingredient);
+    }
   }
 
-  deleteIngredient(uid: string): Observable<string> {
-    return new Observable(subscriber => {
-      ELEMENT_DATA = ELEMENT_DATA.filter(data=>data.uid !== uid);
-      subscriber.next(uid);
-      subscriber.complete();
-    });
+  delete(uid: string) {
+    return this.http.delete(`${environment.apiHist}/ingredient/${uid}`);
   }
 }
-
-export interface Ingredient {
-  uid: string;
-  name: string;
-  qty: number;
-  packageBy: string | null;
-  packageQty: number | null;
-}
-
-let ELEMENT_DATA: Ingredient[] = [
-  {
-    uid: '1',
-    name: '薯條(大)',
-    qty: 3,
-    packageBy: null,
-    packageQty: null
-  },
-  {
-    uid: '2',
-    name: '薯條(小)',
-    qty: 7,
-    packageBy: '1',
-    packageQty: 10
-  },
-  {
-    uid: '3',
-    name: '雞塊(大)',
-    qty: 1,
-    packageBy: null,
-    packageQty: null
-  },
-];
-

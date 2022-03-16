@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatSelect } from '@angular/material/select';
 import { MatTable } from '@angular/material/table';
+import { Ingredient } from 'src/app/interfaces/ingredient';
 import { IngredientService } from 'src/app/services/ingredient.service';
 
 @Component({
@@ -11,7 +12,8 @@ import { IngredientService } from 'src/app/services/ingredient.service';
 export class IngredientConfigComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'qty', 'packageBy', 'packageQty', 'uid'];
-  ingredients: any[] = [];
+  ingredients: Ingredient[] = [];
+  ingredients4PackageBy: Ingredient[] = [];
 
   @ViewChildren('nameInput')
   private names: QueryList<ElementRef> | undefined;
@@ -39,18 +41,20 @@ export class IngredientConfigComponent implements OnInit {
 
   getIngredients() {
     this.ingredientSvc
-      .getIngredients()
+      .findAll()
       .subscribe(data => {
-        this.ingredients = data;
+        const rowData = data as Ingredient[];
+        this.ingredients = rowData;
+        this.ingredients4PackageBy = rowData.filter(data => data.packageByUID === null);
       });
   }
 
   addIngredient() {
     this.ingredients.push({
-      uid: '',
+      uid: null,
       name: '',
       qty: 0,
-      packageBy: null,
+      packageByUID: null,
       packageQty: null
     });
     this.table?.renderRows();
@@ -76,7 +80,7 @@ export class IngredientConfigComponent implements OnInit {
 
   saveIngredient(idx: number) {
     this.ingredientSvc
-      .saveIngredient(this.ingredients[idx])
+      .saveOrUpdate(this.ingredients[idx])
       .subscribe(data => {
         this.getIngredients();
         this.reserveDisabled(idx);
@@ -86,7 +90,7 @@ export class IngredientConfigComponent implements OnInit {
 
   deleteIngredient(idx: number) {
     this.ingredientSvc
-      .deleteIngredient(this.ingredients[idx].uid)
+      .delete(this.ingredients[idx].uid as string)
       .subscribe(data => {
         this.getIngredients();
         this.table?.renderRows();

@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatTable } from '@angular/material/table';
+import { Code } from 'src/app/interfaces/code';
 import { MealClassificationService } from 'src/app/services/meal-classification.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { MealClassificationService } from 'src/app/services/meal-classification.
 export class MealClassificationConfigComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'uid'];
-  classifications: any[] = [];
+  classifications: Code[] = [];
 
   @ViewChildren('nameInput')
   private names: QueryList<ElementRef> | undefined;
@@ -32,16 +33,20 @@ export class MealClassificationConfigComponent implements OnInit {
 
   getClassifications() {
     this.mealClassificationSvc
-      .getMealClassifications()
+      .findAll()
       .subscribe(data => {
-        this.classifications = data;
+        this.classifications = data as Code[];
       });
   }
 
   addClassification() {
     this.classifications.push({
       name: "",
-      uid: ""
+      uid: null,
+      type: {
+        uid: 1,
+        name: "(餐點分類)"
+      }
     });
     this.table?.renderRows();
     setTimeout(() => {
@@ -60,7 +65,7 @@ export class MealClassificationConfigComponent implements OnInit {
 
   saveClassification(idx: number) {
     this.mealClassificationSvc
-      .saveClassification(this.classifications[idx])
+      .saveOrUpdate(this.classifications[idx])
       .subscribe(data => {
         this.getClassifications();
         this.reserveDisabled(idx);
@@ -70,7 +75,7 @@ export class MealClassificationConfigComponent implements OnInit {
 
   deleteClassification(idx: number) {
     this.mealClassificationSvc
-      .deleteClassification(this.classifications[idx].uid)
+      .delete(this.classifications[idx].uid as string)
       .subscribe(data => {
         this.getClassifications();
         this.table?.renderRows();

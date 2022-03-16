@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatTable } from '@angular/material/table';
+import { DinningTable } from 'src/app/interfaces/dinning-table';
 import { DinningTableService } from 'src/app/services/dinning-table.service';
 
 @Component({
@@ -9,8 +10,8 @@ import { DinningTableService } from 'src/app/services/dinning-table.service';
 })
 export class DinningTableConfigComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'seats', 'uid'];
-  tables: any[] = [];
+  displayedColumns: string[] = ['name', 'seats', 'uid'];
+  tables: DinningTable[] = [];
 
   @ViewChildren('idsInput')
   private tableIDs: QueryList<ElementRef> | undefined;
@@ -34,17 +35,17 @@ export class DinningTableConfigComponent implements OnInit {
 
   getTables() {
     this.dinningTableSvc
-      .getDinningTables()
+      .findAll()
       .subscribe(data => {
-        this.tables = data;
+        this.tables = data as DinningTable[];
       });
   }
 
   addTable() {
     this.tables.push({
-      id: "",
+      name: "",
       seats: 0,
-      uid: ""
+      uid: null
     });
     this.table?.renderRows();
     setTimeout(() => {
@@ -65,7 +66,7 @@ export class DinningTableConfigComponent implements OnInit {
 
   saveTable(idx: number) {
     this.dinningTableSvc
-      .saveDinningTable(this.tables[idx])
+      .saveOrUpdate(this.tables[idx])
       .subscribe(data => {
         this.getTables();
         this.reserveDisabled(idx);
@@ -75,7 +76,7 @@ export class DinningTableConfigComponent implements OnInit {
 
   deleteTable(idx: number) {
     this.dinningTableSvc
-      .deleteDinningTable(this.tables[idx].uid)
+      .delete(this.tables[idx].uid as string)
       .subscribe(data => {
         this.getTables();
         this.table?.renderRows();

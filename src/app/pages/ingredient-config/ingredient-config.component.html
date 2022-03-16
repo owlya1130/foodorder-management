@@ -22,7 +22,7 @@
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="fill">
           <mat-label>數量</mat-label>
-          <input #qtyInput matInput [(ngModel)]="element.qty" disabled>
+          <input type="number" #qtyInput matInput [(ngModel)]="element.qty" disabled>
         </mat-form-field>
       </td>
       <td mat-footer-cell *matFooterCellDef> </td>
@@ -32,9 +32,8 @@
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="fill">
           <mat-label>分裝於</mat-label>
-          <!-- <input #packageByInput matInput [(ngModel)]="element.packageBy" > -->
-          <mat-select #packageBySelect disabled [(ngModel)]="element.packageBy">
-            <mat-option *ngFor="let ingredient of ingredients" [value]="ingredient.uid">
+          <mat-select #packageBySelect disabled [(ngModel)]="element.packageByUID">
+            <mat-option *ngFor="let ingredient of ingredients4PackageBy" [value]="ingredient.uid">
               {{ingredient.name}}
             </mat-option>
           </mat-select>
@@ -47,7 +46,7 @@
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="fill">
           <mat-label>分裝數量</mat-label>
-          <input #packageQtyInput matInput [(ngModel)]="element.packageQty" disabled>
+          <input type="number" #packageQtyInput matInput [(ngModel)]="element.packageQty" disabled>
         </mat-form-field>
       </td>
       <td mat-footer-cell *matFooterCellDef> </td>
