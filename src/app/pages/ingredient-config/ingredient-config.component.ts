@@ -17,8 +17,8 @@ export class IngredientConfigComponent implements OnInit {
 
   @ViewChildren('nameInput')
   private names: QueryList<ElementRef> | undefined;
-  @ViewChildren('qtyInput')
-  private qtys: QueryList<ElementRef> | undefined;
+  // @ViewChildren('qtyInput')
+  // private qtys: QueryList<ElementRef> | undefined;
   @ViewChildren('packageBySelect')
   private packageBys: QueryList<MatSelect> | undefined;
   @ViewChildren('packageQtyInput')
@@ -65,11 +65,11 @@ export class IngredientConfigComponent implements OnInit {
 
   reserveDisabled(idx: number) {
     let name = this.names?.get(idx) as ElementRef;
-    let qty = this.qtys?.get(idx) as ElementRef;
+    // let qty = this.qtys?.get(idx) as ElementRef;
     let packageBy = this.packageBys?.get(idx) as MatSelect;
     let packageQty = this.packageQtys?.get(idx) as ElementRef;
     name.nativeElement.disabled = !name.nativeElement.disabled;
-    qty.nativeElement.disabled = !qty.nativeElement.disabled;
+    // qty.nativeElement.disabled = !qty.nativeElement.disabled;
     packageBy.disabled = !packageBy.disabled;
     packageQty.nativeElement.disabled = !packageQty.nativeElement.disabled;
     let btngrp1 = this.btnGrp1s?.get(idx) as ElementRef;
@@ -89,12 +89,16 @@ export class IngredientConfigComponent implements OnInit {
   }
 
   deleteIngredient(idx: number) {
-    this.ingredientSvc
-      .delete(this.ingredients[idx].uid as string)
-      .subscribe(data => {
-        this.getIngredients();
-        this.table?.renderRows();
-      });
+    const target = this.ingredients[idx];
+    const deleteComfirm = confirm(`確定刪除"${target.name}"嗎?`);
+    if (deleteComfirm) {
+      this.ingredientSvc
+        .delete(target.uid as string)
+        .subscribe(data => {
+          this.getIngredients();
+          this.table?.renderRows();
+        });
+    }
   }
 
 }

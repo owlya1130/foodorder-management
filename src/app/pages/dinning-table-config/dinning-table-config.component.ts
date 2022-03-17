@@ -75,12 +75,16 @@ export class DinningTableConfigComponent implements OnInit {
   }
 
   deleteTable(idx: number) {
-    this.dinningTableSvc
-      .delete(this.tables[idx].uid as string)
-      .subscribe(data => {
-        this.getTables();
-        this.table?.renderRows();
-      });
+    const target = this.tables[idx];
+    const deleteComfirm = confirm(`確定刪除"${target.name}"嗎?`);
+    if (deleteComfirm) {
+      this.dinningTableSvc
+        .delete(target.uid as string)
+        .subscribe(data => {
+          this.getTables();
+          this.table?.renderRows();
+        });
+    }
   }
 
 }

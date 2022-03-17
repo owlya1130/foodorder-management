@@ -74,12 +74,16 @@ export class MealClassificationConfigComponent implements OnInit {
   }
 
   deleteClassification(idx: number) {
-    this.mealClassificationSvc
-      .delete(this.classifications[idx].uid as string)
-      .subscribe(data => {
-        this.getClassifications();
-        this.table?.renderRows();
-      });
+    const target = this.classifications[idx];
+    const deleteComfirm = confirm(`確定刪除"${target.name}"嗎?`);
+    if (deleteComfirm) {
+      this.mealClassificationSvc
+        .delete(target.uid as string)
+        .subscribe(data => {
+          this.getClassifications();
+          this.table?.renderRows();
+        });
+    }
   }
 
 }
