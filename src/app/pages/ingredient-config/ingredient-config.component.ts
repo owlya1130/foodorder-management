@@ -11,7 +11,7 @@ import { IngredientService } from 'src/app/services/ingredient.service';
 })
 export class IngredientConfigComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'qty', 'packageBy', 'packageQty', 'uid'];
+  displayedColumns: string[] = ['name', 'packageBy', 'packageQty', 'uid'];
   ingredients: Ingredient[] = [];
   ingredients4PackageBy: Ingredient[] = [];
 

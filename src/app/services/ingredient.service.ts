@@ -15,7 +15,6 @@ export class IngredientService {
   }
 
   saveOrUpdate(ingredient: Ingredient) {
-    console.log(ingredient);
     if (ingredient.uid === null) {
       return this.http.post(`${environment.apiHist}/ingredient`, ingredient);
     } else {
