@@ -22,5 +22,9 @@ export class AppComponent {
     icon: 'table_restaurant',
     title: '餐桌數量設定',
     url: '/dinning-table-config'
+  }, {
+    icon: 'schedule',
+    title: '預約時間區塊設定',
+    url: '/reservation-timeblock-config'
   }]
 }

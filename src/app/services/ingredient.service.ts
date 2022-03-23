@@ -11,18 +11,18 @@ export class IngredientService {
   constructor(private http: HttpClient) { }
 
   findAll() {
-    return this.http.get(`${environment.apiHist}/ingredient/list`);
+    return this.http.get<Ingredient[]>(`${environment.apiHist}/ingredient/list`);
   }
 
   saveOrUpdate(ingredient: Ingredient) {
     if (ingredient.uid === null) {
-      return this.http.post(`${environment.apiHist}/ingredient`, ingredient);
+      return this.http.post<Ingredient>(`${environment.apiHist}/ingredient`, ingredient);
     } else {
-      return this.http.put(`${environment.apiHist}/ingredient`, ingredient);
+      return this.http.put<Ingredient>(`${environment.apiHist}/ingredient`, ingredient);
     }
   }
 
   delete(uid: string) {
-    return this.http.delete(`${environment.apiHist}/ingredient/${uid}`);
+    return this.http.delete<Ingredient>(`${environment.apiHist}/ingredient/${uid}`);
   }
 }

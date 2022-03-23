@@ -34,10 +34,11 @@ export class DinningTableConfigComponent implements OnInit {
   }
 
   getTables() {
-    this.dinningTableSvc
+    const subscriber = this.dinningTableSvc
       .findAll()
       .subscribe(data => {
-        this.tables = data as DinningTable[];
+        this.tables = data;
+        subscriber.unsubscribe();
       });
   }
 
@@ -65,12 +66,13 @@ export class DinningTableConfigComponent implements OnInit {
   }
 
   saveTable(idx: number) {
-    this.dinningTableSvc
+    const subscriber = this.dinningTableSvc
       .saveOrUpdate(this.tables[idx])
       .subscribe(data => {
         this.getTables();
         this.reserveDisabled(idx);
         this.table?.renderRows();
+        subscriber.unsubscribe();
       });
   }
 
@@ -78,11 +80,12 @@ export class DinningTableConfigComponent implements OnInit {
     const target = this.tables[idx];
     const deleteComfirm = confirm(`確定刪除"${target.name}"嗎?`);
     if (deleteComfirm) {
-      this.dinningTableSvc
+      const subscriber = this.dinningTableSvc
         .delete(target.uid as string)
         .subscribe(data => {
           this.getTables();
           this.table?.renderRows();
+          subscriber.unsubscribe();
         });
     }
   }

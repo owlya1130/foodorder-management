@@ -1,0 +1,17 @@
+<div>
+  <mat-toolbar>
+    <span>預約時間區塊設定</span>
+    <span style="flex: 1 1 auto;"></span>
+  </mat-toolbar>
+</div>
+
+<div style="width: 100%; margin: 10px;">
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill">
+      <mat-label>區塊數量(每區塊30分鐘)</mat-label>
+      <input matInput type="number" placeholder="區塊數量(每區塊30分鐘)" formControlName="name">
+    </mat-form-field>
+    <button mat-raised-button *ngIf="form.disabled" (click)="onEdit()">修改</button>
+    <button mat-raised-button *ngIf="form.enabled" color="primary" (click)="saveReservationTimeblock()">儲存</button>
+  </form>
+</div>

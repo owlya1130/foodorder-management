@@ -40,12 +40,13 @@ export class IngredientConfigComponent implements OnInit {
   }
 
   getIngredients() {
-    this.ingredientSvc
+    const subscriber = this.ingredientSvc
       .findAll()
       .subscribe(data => {
-        const rowData = data as Ingredient[];
+        const rowData = data;
         this.ingredients = rowData;
         this.ingredients4PackageBy = rowData.filter(data => data.packageByUID === null);
+        subscriber.unsubscribe();
       });
   }
 
@@ -79,12 +80,13 @@ export class IngredientConfigComponent implements OnInit {
   }
 
   saveIngredient(idx: number) {
-    this.ingredientSvc
+    const subscriber = this.ingredientSvc
       .saveOrUpdate(this.ingredients[idx])
       .subscribe(data => {
         this.getIngredients();
         this.reserveDisabled(idx);
         this.table?.renderRows();
+        subscriber.unsubscribe();
       });
   }
 
@@ -92,11 +94,12 @@ export class IngredientConfigComponent implements OnInit {
     const target = this.ingredients[idx];
     const deleteComfirm = confirm(`確定刪除"${target.name}"嗎?`);
     if (deleteComfirm) {
-      this.ingredientSvc
+      const subscriber = this.ingredientSvc
         .delete(target.uid as string)
         .subscribe(data => {
           this.getIngredients();
           this.table?.renderRows();
+          subscriber.unsubscribe();
         });
     }
   }

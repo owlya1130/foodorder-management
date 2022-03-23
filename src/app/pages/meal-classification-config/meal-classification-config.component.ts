@@ -32,10 +32,11 @@ export class MealClassificationConfigComponent implements OnInit {
   }
 
   getClassifications() {
-    this.mealClassificationSvc
+    const subscriber = this.mealClassificationSvc
       .findAll()
       .subscribe(data => {
-        this.classifications = data as Code[];
+        this.classifications = data;
+        subscriber.unsubscribe();
       });
   }
 
@@ -43,10 +44,7 @@ export class MealClassificationConfigComponent implements OnInit {
     this.classifications.push({
       name: "",
       uid: null,
-      type: {
-        uid: 1,
-        name: "(餐點分類)"
-      }
+      type: null
     });
     this.table?.renderRows();
     setTimeout(() => {
@@ -64,12 +62,13 @@ export class MealClassificationConfigComponent implements OnInit {
   }
 
   saveClassification(idx: number) {
-    this.mealClassificationSvc
+    const subscriber = this.mealClassificationSvc
       .saveOrUpdate(this.classifications[idx])
       .subscribe(data => {
         this.getClassifications();
         this.reserveDisabled(idx);
         this.table?.renderRows();
+        subscriber.unsubscribe();
       });
   }
 
@@ -77,11 +76,12 @@ export class MealClassificationConfigComponent implements OnInit {
     const target = this.classifications[idx];
     const deleteComfirm = confirm(`確定刪除"${target.name}"嗎?`);
     if (deleteComfirm) {
-      this.mealClassificationSvc
+      const subscriber = this.mealClassificationSvc
         .delete(target.uid as string)
         .subscribe(data => {
           this.getClassifications();
           this.table?.renderRows();
+          subscriber.unsubscribe();
         });
     }
   }

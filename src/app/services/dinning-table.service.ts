@@ -11,18 +11,18 @@ export class DinningTableService {
   constructor(private http: HttpClient) { }
 
   findAll() {
-    return this.http.get(`${environment.apiHist}/dinningtable/list`);
+    return this.http.get<DinningTable[]>(`${environment.apiHist}/dinningtable/list`);
   }
 
   saveOrUpdate(dinningTable: DinningTable) {
     if (dinningTable.uid === null) {
-      return this.http.post(`${environment.apiHist}/dinningtable`, dinningTable);
+      return this.http.post<DinningTable>(`${environment.apiHist}/dinningtable`, dinningTable);
     } else {
-      return this.http.put(`${environment.apiHist}/dinningtable`, dinningTable);
+      return this.http.put<DinningTable>(`${environment.apiHist}/dinningtable`, dinningTable);
     }
   }
 
   delete(uid: string) {
-    return this.http.delete(`${environment.apiHist}/dinningtable/${uid}`);
+    return this.http.delete<DinningTable>(`${environment.apiHist}/dinningtable/${uid}`);
   }
 }
