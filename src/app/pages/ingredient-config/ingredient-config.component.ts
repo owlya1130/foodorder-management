@@ -36,8 +36,7 @@ export class IngredientConfigComponent implements OnInit {
     this.getIngredients();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   getIngredients() {
     const subscriber = this.ingredientSvc
@@ -45,7 +44,7 @@ export class IngredientConfigComponent implements OnInit {
       .subscribe(data => {
         const rowData = data;
         this.ingredients = rowData;
-        this.ingredients4PackageBy = rowData.filter(data => data.packageByUID === null);
+        this.ingredients4PackageBy = rowData.filter(d => d.packageByUID === null);
         subscriber.unsubscribe();
       });
   }
@@ -54,7 +53,6 @@ export class IngredientConfigComponent implements OnInit {
     this.ingredients.push({
       uid: null,
       name: '',
-      qty: 0,
       packageByUID: null,
       packageQty: null
     });
